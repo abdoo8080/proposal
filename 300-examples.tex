@@ -1,8 +1,11 @@
 \section{Motivating example: matrix multiplication}
 \label{sec:example}
-When we use a program, not only do we care about its functional correctness, but also about its running time.
+
+Assume that we want to write a program that multiplies two matrices efficiently. 
 %
-Matrix multiplication is a simple example of this: given $2 \times 2$ matrices $A$ and $B$, their product is defined as
+Not only do we care about its functional correctness, but also about its running time.
+%
+The problem can be described as: given $2 \times 2$ matrices $A$ and $B$, then find a program that efficiently computes the product defined as
 %
 \begin{equation}
     AB =
@@ -21,7 +24,7 @@ a_{21} * b_{12} + a_{22} * b_{22} \\
 % %
 % A more efficient formulation requiring only 7 multiplications (at the expense of more additions) was discovered by Strassen:
 % %
-
+%
 % \begin{tabular}{llll}
 %     $ m_{1} = (a_{11} + a_{22}) * (b_{11} + b_{22}) $ &
 %     $ m_{2} = (a_{21} + a_{22}) * b_{11} $ &
@@ -39,7 +42,7 @@ a_{21} * b_{12} + a_{22} * b_{22} \\
 %     m_2 + m_4 &
 %     m_1 - m_2 + m_3 + m_6 \\
 % \end{bmatrix} \]
-If we ask a SyGuS solver to synthesize a function $mul$ that performs matrix multiplication with the following grammar:
+Using SyGuS solver to synthesize a solution, we can use the following \emph{naive} grammar:
 %
 \[
 T ::= 0 \ | \ 1 \ | \ a_{ij} \ | \ b_{ij}, \quad
@@ -50,9 +53,11 @@ I & I
 \end{bmatrix}
 \]
 %
-and $S$ as the start symbol, it will just return a naive implementation that performs the exact operation in the formulation, mainly: 8 multiplications and 4 additions.
+where $S$ is the start symbol. 
 %
-Multiplication, however, is known to be much more expensive than addition.
+SyGus will (unsurprisingly) return a naive implementation that performs the exact operation in the formulation, mainly: 8 multiplications and 4 additions.
+%
+Multiplication, however, is known to be much more computationally expensive than addition.
 %
 So, we would prefer implementations that reduce the number of multiplications like Strassen's algorithm, which performs only 7 multiplications, over the naive version.
 %

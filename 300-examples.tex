@@ -1,0 +1,76 @@
+\section{Motivating example: matrix multiplication}
+\label{sec:example}
+When we use a program, not only do we care about its functional correctness, but also about its running time.
+%
+Matrix multiplication is a simple example of this: given $2 \times 2$ matrices $A$ and $B$, their product is defined as
+%
+\begin{equation}
+    AB =
+\begin{bmatrix}
+a_{11} * b_{11} + a_{12} * b_{21} &
+a_{11} * b_{12} + a_{12} * b_{22} \\
+a_{21} * b_{11} + a_{22} * b_{21} &
+a_{21} * b_{12} + a_{22} * b_{22} \\
+\end{bmatrix}
+\label{eqn:matrix-mul}
+\end{equation}
+% %
+% This definition requires 8 multiplication operations and 4 additions.
+% %
+% Multiplication operations are known to be more expensive than addition.
+% %
+% A more efficient formulation requiring only 7 multiplications (at the expense of more additions) was discovered by Strassen:
+% %
+
+% \begin{tabular}{llll}
+%     $ m_{1} = (a_{11} + a_{22}) * (b_{11} + b_{22}) $ &
+%     $ m_{2} = (a_{21} + a_{22}) * b_{11} $ &
+%     $ m_{3} = a_{11} * (b_{12} - b_{22}) $ \\
+%     $ m_{4} = a_{22} * (b_{21} - b_{11}) $ &
+%     $ m_{5} = (a_{11} + a_{12}) * b_{22} $ &
+%     $ m_{6} = (a_{21} - a_{11}) * (b_{11} + b_{12}) $ \\
+%     & $ m_{7} = (a_{12} - a{22}) * (b_{21} + b_{22}) $
+% \end{tabular}
+%
+% \[ AB =
+% \begin{bmatrix}
+%     m_1 + m_4 - m_5 + m_7 &
+%     m_3 + m_5 \\
+%     m_2 + m_4 &
+%     m_1 - m_2 + m_3 + m_6 \\
+% \end{bmatrix} \]
+If we ask a SyGuS solver to synthesize a function $mul$ that performs matrix multiplication with the following grammar:
+%
+\[
+T ::= 0 \ | \ 1 \ | \ a_{ij} \ | \ b_{ij}, \quad
+I ::= T \ | \ I + I \ | \ I - I \ | \ I * I, \quad
+S ::=
+\begin{bmatrix} I & I \\
+I & I
+\end{bmatrix}
+\]
+%
+and $S$ as the start symbol, it will just return a naive implementation that performs the exact operation in the formulation, mainly: 8 multiplications and 4 additions.
+%
+Multiplication, however, is known to be much more expensive than addition.
+%
+So, we would prefer implementations that reduce the number of multiplications like Strassen's algorithm, which performs only 7 multiplications, over the naive version.
+%
+\paragraph{}
+Similar problems occur in other synthesis applications: minimizing the number of logic gates in circuits, aggregate function applications in SQL queries, etc.
+%
+\paragraph{}
+One issue with the original formulation of the SyGuS problem is that it does not tell the solver the cost of using each operation. To address this issue, the SyGuS standard was recently extended to give weights to each grammar rule:
+%
+\[
+T ::= 0^0 \ | \ 1^0 \ | \ a_{ij}^0 \ | \ b_{ij}^0, \quad
+I ::= T \ | \ I +^1 I \ | \ I -^1 I \ | \ I *^{64} I, \quad
+S ::=
+\begin{bmatrix} I & I \\
+I & I
+\end{bmatrix}^0
+\]
+%
+By adding weights, there is enough information to find the optimal implementation, the one with the least weight.
+%
+However, to our knowledge, no major SyGuS solver currently supports this feature.

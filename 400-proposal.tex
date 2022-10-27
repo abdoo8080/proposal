@@ -1,0 +1,22 @@
+\section{Proposal}
+\label{sec:proposal}
+%
+In this research project, our goal is two fold:
+%
+first to design and implement new algorithms that generate functions satisfying some optimization constraints,
+%
+and second to restrict the generation of such functions based on a hint or a guide.
+%
+More formally, we want to enumerate terms in the SyGuS grammar that generate functions with minimal weight.
+%
+To reach such goals we are implementing two different strategies: we begin with terms having minimum weight and check them against the unweighted solution.
+%
+pro: guarantees minimality of weight
+con: slow
+
+The second strategy begin with the unweighted solution and try to minimize
+pro: fast. improves with time
+con: lose minimality guarantee
+
+Practical results expected from this project:
+Benefits: 

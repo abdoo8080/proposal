@@ -1,22 +1,57 @@
 \section{Proposal}
 \label{sec:proposal}
 %
-In this research project, our goal is two fold:
+Adding weight annotations to grammar rules changes the original SyGuS problem into an optimization problem:
 %
-first to design and implement new algorithms that generate functions satisfying some optimization constraints,
+synthesize a program that satisfies the (1) semantic (2) syntactic constraints while minimizing the total (3) weight.
 %
-and second to restrict the generation of such functions based on a hint or a guide.
+The main goal of our proposal is to solve this new problem by extending current techniques to account for weights:
 %
-More formally, we want to enumerate terms in the SyGuS grammar that generate functions with minimal weight.
+\paragraph{Modify Enumerators to generate terms with increasing weights:}
 %
-To reach such goals we are implementing two different strategies: we begin with terms having minimum weight and check them against the unweighted solution.
+Current enumerators are designed to enumerate all terms in the language specified by the grammar.
 %
-pro: guarantees minimality of weight
-con: slow
-
-The second strategy begin with the unweighted solution and try to minimize
-pro: fast. improves with time
-con: lose minimality guarantee
-
-Practical results expected from this project:
-Benefits: 
+They start by enumerating the simplest terms (e.g., terminal symbols) and then iteratively apply production rules on them.
+%
+Our proposal is for the enumerators to generate terms in order of increasing weight.
+%
+This modification will force the SyGuS solvers to test "lighter" terms against the semantic constraints first and ensure they return a solution with minimal weight.
+%
+This change can be thought as a generalization of the current behavior of enumerators, which can be recovered by assigning terminal symbols a weight of zero and other rules a weight of 1.
+%
+\paragraph{Improve Unification techniques to generate terms with decreasing weights:}
+%
+Unification is a process of pattern matching the structure of the desired solution against the grammar rules.
+%
+If a match succeeds, the SyGuS problem is divided into smaller sub-problems that are easier to solve.
+%
+For example, in the matrix multiplication problem, we know that the solution is a $2 \times 2$ matrix. So, instead of enumerating all $2 \times 2$ matrices
+%
+\[
+\begin{bmatrix} a_{11} & a_{11} \\ a_{11} & a_{11} \end{bmatrix},
+\begin{bmatrix} a_{11} & a_{11} \\ a_{11} & a_{12} \end{bmatrix},
+\begin{bmatrix} a_{11} & a_{11} \\ a_{11} & a_{21} \end{bmatrix},
+...
+\]
+%
+we can pattern match the rule $\begin{bmatrix} I & I \\ I & I \end{bmatrix}$ against $AB$ and try to solve the sub-problems
+\[
+\begin{matrix}
+    mul(A,B)_{11} = a_{11} * b_{11} + a_{12} * b_{21} &&
+    mul(A,B)_{12} = a_{11} * b_{12} + a_{12} * b_{22} \\
+    mul(A,B)_{21} = a_{21} * b_{11} + a_{22} * b_{21} &&
+    mul(A,B)_{22} = a_{21} * b_{12} + a_{22} * b_{22} \\
+\end{matrix}
+\]
+%
+Solving these sub-problems using enumeration is orders-of-magnitude faster than solving the original problem.
+%
+Supporting weights with unification is not as straight forward compared to enumeration.
+%
+One approach is to ignore weights and find an initial solution to the problem using unification.
+%
+Then, use enumeration to improve the weights bottom up.
+%
+This solution does not scale for problems like matrix multiplication.
+%
+However, we can use some heuristics to recover termination for some problems (e.g., rules with 0 weight like $\begin{bmatrix} I & I \\ I & I \end{bmatrix}^0$).

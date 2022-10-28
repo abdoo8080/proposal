@@ -42,10 +42,10 @@ a_{21} * b_{12} + a_{22} * b_{22} \\
 %     m_2 + m_4 &
 %     m_1 - m_2 + m_3 + m_6 \\
 % \end{bmatrix} \]
-Using SyGuS solver to synthesize a solution, we can use the following \emph{naive} grammar:
+Using SyGuS solver to synthesize a solution, we can use the following simple grammar:
 %
 \[
-T ::= 0 \ | \ 1 \ | \ a_{ij} \ | \ b_{ij}, \quad
+T ::= a_{ij} \ | \ b_{ij}, \quad
 I ::= T \ | \ I + I \ | \ I - I \ | \ I * I, \quad
 S ::=
 \begin{bmatrix} I & I \\
@@ -65,10 +65,10 @@ So, we would prefer implementations that reduce the number of multiplications li
 Similar problems occur in other synthesis applications: minimizing the number of logic gates in circuits, aggregate function applications in SQL queries, etc.
 %
 \paragraph{}
-One issue with the original formulation of the SyGuS problem is that it does not tell the solver the cost of using each operation. To address this issue, the SyGuS standard was recently extended to give weights to each grammar rule:
+One issue with the original formulation of the SyGuS problem is that it does not tell the solver the cost of using each operation. To address this issue, the SyGuS standard was recently extended to annotate grammar rules with weights:
 %
 \[
-T ::= 0^0 \ | \ 1^0 \ | \ a_{ij}^0 \ | \ b_{ij}^0, \quad
+T ::= a_{ij}^0 \ | \ b_{ij}^0, \quad
 I ::= T \ | \ I +^1 I \ | \ I -^1 I \ | \ I *^{64} I, \quad
 S ::=
 \begin{bmatrix} I & I \\

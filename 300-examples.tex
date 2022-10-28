@@ -55,16 +55,16 @@ I & I
 %
 where $S$ is the start symbol. 
 %
-SyGus will (unsurprisingly) return a naive implementation that performs the exact operation in the formulation, mainly: 8 multiplications and 4 additions.
+SyGuS solver returns a naive implementation that performs the exact operation in the formulation using 8 multiplications and 4 additions.
 %
-Multiplication, however, is known to be much more computationally expensive than addition.
+Multiplication, however, is known to be more computationally expensive than addition.
 %
 So, we would prefer implementations that reduce the number of multiplications like Strassen's algorithm, which performs only 7 multiplications, over the naive version.
 %
-\paragraph{}
+
+%TODO Need more refinement and connecting with previous paragraph
 Similar problems occur in other synthesis applications: minimizing the number of logic gates in circuits, aggregate function applications in SQL queries, etc.
-%
-\paragraph{}
+
 One issue with the original formulation of the SyGuS problem is that it does not tell the solver the cost of using each operation. To address this issue, the SyGuS standard was recently extended to annotate grammar rules with weights:
 %
 \[

@@ -1,57 +1,77 @@
 \section{Proposal}
 \label{sec:proposal}
+%TODO: make smooth transition to this sentence
+In this project, our main goal is to equip SyGuS solvers with extra functionality that can generate optimal programs according to some given cost constraints.
 %
 Adding weight annotations to grammar rules changes the original SyGuS problem into an optimization problem:
 %
 synthesize a program that satisfies the (1) semantic (2) syntactic constraints while minimizing the total (3) weight.
 %
-The main goal of our proposal is to solve this new problem by extending current techniques to account for weights:
+The main goal of our proposal is to solve this new problem by extending current techniques to account for weights.
 %
-\paragraph{Modify Enumerators to generate terms with increasing weights:}
+We explore two strategies to design
 %
-Current enumerators are designed to enumerate all terms in the language specified by the grammar.
+\begin{description}
+\item[modify enumerators to generate terms with increasing weights:]
+%
+current enumerators are designed to enumerate all terms in the language specified by the grammar.
 %
 They start by enumerating the simplest terms (e.g., terminal symbols) and then iteratively apply production rules on them.
 %
-Our proposal is for the enumerators to generate terms in order of increasing weight.
+Our aim here is for the enumerators to generate terms in order of increasing weights.
 %
-This modification will force the SyGuS solvers to test "lighter" terms against the semantic constraints first and ensure they return a solution with minimal weight.
+This modification will force SuGus solvers to generate minimal weight solutions 
 %
-This change can be thought as a generalization of the current behavior of enumerators, which can be recovered by assigning terminal symbols a weight of zero and other rules a weight of 1.
+that satisfy the provided semantic constraints.
 %
-\paragraph{Improve Unification techniques to generate terms with decreasing weights:}
+% This modification will force the SyGuS solvers to test ``lighter" terms against the semantic constraints first and ensure they return a solution with minimal weight.
 %
-Unification is a process of pattern matching the structure of the desired solution against the grammar rules.
+This change can be thought of as an extension of the current behavior of enumerators, 
 %
-If a match succeeds, the SyGuS problem is divided into smaller sub-problems that are easier to solve.
+which can be recovered by simply assigning terminal symbols a weight of 0 and other rules a weight of 1.
 %
-For example, in the matrix multiplication problem, we know that the solution is a $2 \times 2$ matrix. So, instead of enumerating all $2 \times 2$ matrices
+\item[improve unification to generate terms with decreasing weights:]
 %
-\[
-\begin{bmatrix} a_{11} & a_{11} \\ a_{11} & a_{11} \end{bmatrix},
-\begin{bmatrix} a_{11} & a_{11} \\ a_{11} & a_{12} \end{bmatrix},
-\begin{bmatrix} a_{11} & a_{11} \\ a_{11} & a_{21} \end{bmatrix},
-...
-\]
+unification is a process of pattern matching the structure of the desired solution against the grammar rules.
 %
-we can pattern match the rule $\begin{bmatrix} I & I \\ I & I \end{bmatrix}$ against $AB$ and try to solve the sub-problems
-\[
-\begin{matrix}
-    mul(A,B)_{11} = a_{11} * b_{11} + a_{12} * b_{21} &&
-    mul(A,B)_{12} = a_{11} * b_{12} + a_{12} * b_{22} \\
-    mul(A,B)_{21} = a_{21} * b_{11} + a_{22} * b_{21} &&
-    mul(A,B)_{22} = a_{21} * b_{12} + a_{22} * b_{22} \\
-\end{matrix}
-\]
+If a match succeeds, the SyGuS problem is then divided into smaller sub-problems that are easier to solve.
 %
-Solving these sub-problems using enumeration is orders-of-magnitude faster than solving the original problem.
+For matrix multiplication problem, we know that the solution is a $2 \times 2$ matrix. So, instead of enumerating all $2 \times 2$ matrices
 %
-Supporting weights with unification is not as straight forward compared to enumeration.
+\begin{equation}
+\begin{bmatrix} a_{11} & a_{11} \\ a_{11} & \textcolor{blue}{a_{11}} \end{bmatrix},
+\begin{bmatrix} a_{11} & a_{11} \\ a_{11} & \textcolor{blue}{a_{12}} \end{bmatrix},
+\begin{bmatrix} a_{11} & a_{11} \\ a_{11} & \textcolor{blue}{a_{21}} \end{bmatrix},
+...,
+\label{eq:sequence-matrices}
+\end{equation}
 %
-One approach is to ignore weights and find an initial solution to the problem using unification.
+we can ``pattern match" the rule $\begin{bmatrix} I & I \\ I & I \end{bmatrix}$ against $AB$ and try to solve the sub-problems
 %
-Then, use enumeration to improve the weights bottom up.
+\begin{align*}
+    mul(A,B)_{11} &= a_{11} * b_{11} + a_{12} * b_{21} &
+    mul(A,B)_{12} &= a_{11} * b_{12} + a_{12} * b_{22} \\
+    mul(A,B)_{21} &= a_{21} * b_{11} + a_{22} * b_{21} &
+    mul(A,B)_{22} &= a_{21} * b_{12} + a_{22} * b_{22}. 
+\end{align*}
 %
-This solution does not scale for problems like matrix multiplication.
+Solving these sub-problems using enumeration is orders--of--magnitude faster than enumerating \eqref{eq:sequence-matrices}.
 %
-However, we can use some heuristics to recover termination for some problems (e.g., rules with 0 weight like $\begin{bmatrix} I & I \\ I & I \end{bmatrix}^0$).
+State of the art solvers utilize this technique to trim the size of large search spaces.
+%
+However, it not clear to us yet how to support weights with unification. 
+%
+For example, following greedy approach by choosing minimum rules for pattern matching may not lead us to a minimal solution. 
+%
+One approach to resolve that might be to ignore weights and find an initial solution to the problem using unification.
+%
+Then, iteratively use enumeration over the initial solution to reduce the weights of the sub-terms.
+%
+It might be clear how such iterative process may terminate for simple problems,
+%
+but it gets more difficult with more complex problems. 
+%
+For example, such solution does not scale for problems like matrix multiplication.
+%
+instead, we can use some heuristics to recover termination for these type of problems (e.g., rules with 0 weight like $\begin{bmatrix} I & I \\ I & I \end{bmatrix}^0$).
+\end{description}

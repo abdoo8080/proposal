@@ -45,8 +45,8 @@ a_{21} * b_{12} + a_{22} * b_{22} \\
 Using SyGuS solver to synthesize a solution, we can use the following simple grammar:
 %
 \[
-T ::= a_{ij} \ | \ b_{ij}, \quad
-I ::= T \ | \ I + I \ | \ I - I \ | \ I * I, \quad
+V ::= a_{ij} \ | \ b_{ij}, \quad
+I ::= V \ | \ I + I \ | \ I - I \ | \ I * I, \quad
 S ::=
 \begin{bmatrix} I & I \\
 I & I

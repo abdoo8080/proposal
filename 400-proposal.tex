@@ -1,15 +1,33 @@
 \section{Proposal}
 \label{sec:proposal}
-%TODO: make smooth transition to this sentence
+%
 In this project, our main goal is to equip SyGuS solvers with extra functionality that can generate optimal programs according to some given cost constraints.
 %
+First, we need to communicate to the solver the cost of each term in the search space.
+%
+We can do so by adding \emph{weight annotations} to the grammar rules of the original formulation of the SyGuS problem.
+%
+For the matrix multiplication example, the extension would look like so
+%
+\[
+T ::= a_{ij}^0 \ | \ b_{ij}^0, \quad
+I ::= T \ | \ I +^1 I \ | \ I -^1 I \ | \ I *^{16} I, \quad
+S ::=
+\begin{bmatrix} I & I \\
+I & I
+\end{bmatrix}^0
+\]
+%
+We then define the \emph{total weight} of the program to be the sum of the individual weights of each rule applied to construct the program. For example, $weight(a_{11} * b_{11} + a_{12} * b_{21}) = 4*0 + 1*1 + 2* 16 = 33$.
+%
+
 Adding weight annotations to grammar rules changes the original SyGuS problem into an optimization problem:
 %
 synthesize a program that satisfies the (1) semantic (2) syntactic constraints while minimizing the total (3) weight.
 %
-The main goal of our proposal is to solve this new problem by extending current techniques to account for weights.
+Our proposal is to solve this new problem by extending current strategies to account for weights.
 %
-We explore two strategies to design
+We explore two strategies
 %
 \begin{description}
 \item[modify enumerators to generate terms with increasing weights:]

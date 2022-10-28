@@ -64,18 +64,3 @@ So, we would prefer implementations that reduce the number of multiplications li
 
 %TODO Need more refinement and connecting with previous paragraph
 Similar problems occur in other synthesis applications: minimizing the number of logic gates in circuits, aggregate function applications in SQL queries, etc.
-
-One issue with the original formulation of the SyGuS problem is that it does not tell the solver the cost of using each operation. To address this issue, the SyGuS standard was recently extended to annotate grammar rules with weights:
-%
-\[
-T ::= a_{ij}^0 \ | \ b_{ij}^0, \quad
-I ::= T \ | \ I +^1 I \ | \ I -^1 I \ | \ I *^{64} I, \quad
-S ::=
-\begin{bmatrix} I & I \\
-I & I
-\end{bmatrix}^0
-\]
-%
-By adding weights, there is enough information to find the optimal implementation, the one with the least weight.
-%
-However, to our knowledge, no major SyGuS solver currently supports this feature.

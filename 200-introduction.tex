@@ -1,6 +1,6 @@
 \section{Introduction}
 \label{sec:introduction}
-%
+% The need for PV, and PS.
 Our dependence on technology has increased exponentially in recent decades.
 %
 We use technology in every aspect of our life, from daily mundane tasks like checking the news to life critical and expensive tasks like flying airplanes.
@@ -9,12 +9,19 @@ The complexity of hardware and software also increased as a result.
 %
 As we depend more on technology, there is an increasing need to ensure that those ever more complex technologies work as intended, especially in critical applications.
 %
-To address this concern, engineers utilize Program verification tools to formally (i.e., mathematically) check if a program satisfies some constraints specified as first-order logic formulas.Those constraints are encodings of the relationships between the inputs and outputs of a program.
+To address this concern, engineers utilize \emph{Program Verification} tools
 %
-Those tools have uncovered many bugs and raised the standard of reliability to a new level that is now required in certain industries.
+to formally (offering mathematical proofs) check if a program satisfies some constraints specified as first-order logic formulas.
 %
-Program verification techniques in some fields have advanced to the point where instead of verifying that a program satisfies some correctness specifications, the tools can synthesize a program that satisfies that is correct by construction.
+Those constraints are encodings of the relationships between the inputs and outputs of a program.
 %
+Such tools have uncovered many bugs and raised the standard of reliability to a new level that is now required in certain industries.
+%
+Program Verification techniques in some fields have advanced to the point where instead of verifying that a program satisfies some given correctness specifications, 
+%
+they can synthesize a program which satisfies those specifications by construction.
+
+%Potential of PS as well as challenges and shortcomings
 Program Synthesis has the potential to impact the quality of software even more than program verification.
 %
 Program Synthesis, however, is a much harder problem to solve with a high potential for a tool to get stuck on a wrong part of the infinite search space (TODO: give a simple example).

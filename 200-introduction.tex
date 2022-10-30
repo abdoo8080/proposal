@@ -17,7 +17,7 @@ Those constraints are encodings of the relationships between the inputs and outp
 %
 Such tools have uncovered many bugs and raised the standard of reliability to a new level that is now required in certain industries.
 %
-Program Verification techniques in some fields have advanced to the point where instead of verifying that a program satisfies some given correctness specifications, 
+Program Verification techniques in some fields have advanced to the point where instead of verifying that a program satisfies some given correctness specifications,
 %
 they can synthesize a program which satisfies those specifications by construction.
 
@@ -28,4 +28,6 @@ Program Synthesis, however, is a much harder problem to solve with a high potent
 %
 To guide the tool and limit the search space the tools are often also provided with a set of syntactic operators (i.e., a context-free grammar) it can compose together to generate programs in the search space (set of allowed programs).
 %
-The original set of semantic constraints combined with the new set of syntactic constraints constitute a Syntax-Guided Synthesis (SyGuS) Problem.
+The original set of semantic constraints combined with the new set of syntactic constraints constitute a Syntax-Guided Synthesis (SyGuS) Problem~\cite{sygus:2013}.
+
+\input{figures/sygus-main.tex}

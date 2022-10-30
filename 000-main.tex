@@ -1,30 +1,39 @@
 \documentclass[11pt,letterpaper]{article}
-% \usepackage{booktabs}
+\usepackage{booktabs}
 % \usepackage{caption}
 % \usepackage{float}
 % \usepackage{graphicx}
+\usepackage{multicol}
 \usepackage{amsmath}
 \usepackage{hyperref}
 \usepackage[margin=1in]{geometry}
 \usepackage{color}
+\usepackage{graphicx}
 % \usepackage{table}
 % \usepackage{ltablex}
 % \usepackage{subcaption}
 % \usepackage{titling}
 
-\title{Synthesizing Optimized Programs}
+\title{\vspace{-8ex}Synthesizing Optimized Programs}
 \author{}
-\date{}
+\date{\vspace{-10ex}}
 
 \begin{document}
 
 \maketitle
 
 \input{100-abstract.tex}
+% \begin{multicols}{2}
 \input{200-introduction.tex}
 \input{300-examples.tex}
 \input{400-proposal.tex}
 \input{500-relevence.tex}
 \input{600-conclusion.tex}
+% \end{multicols}
+
+\newpage
+
+\bibliography{000-main}
+\bibliographystyle{plain}
 
 \end{document}

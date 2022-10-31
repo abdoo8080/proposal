@@ -7,15 +7,15 @@ First, we need to communicate to the solver the cost of each term in the search 
 %
 We can do so by adding \emph{weight annotations} to the grammar rules of the original formulation of the SyGuS problem.
 %
-For the matrix multiplication example, the extension would look like so
+For the matrix multiplication example, the extension would look like
 %
 \[
-V ::= a_{ij}^0 \ | \ b_{ij}^0, \quad
-I ::= V \ | \ I +^1 I \ | \ I -^1 I \ | \ I *^{16} I, \quad
-S ::=
-\begin{bmatrix} I & I \\
-I & I
-\end{bmatrix}^0
+    S ::=
+    \begin{pmatrix} I & I \\
+        I & I
+    \end{pmatrix}^0, \quad
+    I ::= V \ | \ I +^1 I \ | \ I -^1 I \ | \ I *^{16} I, \quad
+V ::= a_{ij}^0 \ | \ b_{ij}^0.
 \]
 %
 We then define the \emph{total weight} of the program to be the sum of the individual weights of each rule applied to construct the program. For example, $weight(a_{11} * b_{11} + a_{12} * b_{21}) = 4*0 + 1*1 + 2* 16 = 33$.
@@ -25,7 +25,7 @@ Adding weight annotations to grammar rules changes the original SyGuS problem in
 %
 synthesize a program that satisfies the (1) semantic and (2) syntactic constraints while minimizing the total (3) weight.
 %
-Our proposal is to solve this new problem by extending current strategies to account for weights.
+% Our proposal is to solve this new problem by extending current strategies to account for weights.
 %
 We explore two strategies
 %
@@ -55,14 +55,14 @@ If a match succeeds, the SyGuS problem is then divided into smaller sub-problems
 For matrix multiplication problem, we know that the solution is a $2 \times 2$ matrix. So, instead of enumerating all $2 \times 2$ matrices
 %
 \begin{equation}
-\begin{bmatrix} a_{11} & a_{11} \\ a_{11} & \textcolor{blue}{a_{11}} \end{bmatrix},
-\begin{bmatrix} a_{11} & a_{11} \\ a_{11} & \textcolor{blue}{a_{12}} \end{bmatrix},
-\begin{bmatrix} a_{11} & a_{11} \\ a_{11} & \textcolor{blue}{a_{21}} \end{bmatrix},
+\begin{pmatrix} a_{11} & a_{11} \\ a_{11} & \textcolor{blue}{a_{11}} \end{pmatrix},
+\begin{pmatrix} a_{11} & a_{11} \\ a_{11} & \textcolor{blue}{a_{12}} \end{pmatrix},
+\begin{pmatrix} a_{11} & a_{11} \\ a_{11} & \textcolor{blue}{a_{21}} \end{pmatrix},
 ...,
 \label{eq:sequence-matrices}
 \end{equation}
 %
-we can ``pattern match" the rule $\begin{bmatrix} I & I \\ I & I \end{bmatrix}$ against $AB$ and try to solve the sub-problems
+we can ``pattern match" the rule $\begin{pmatrix} I & I \\ I & I \end{pmatrix}$ against $AB$ and try to solve the sub-problems
 %
 \begin{align*}
     mul(A,B)_{11} &= a_{11} * b_{11} + a_{12} * b_{21} &
@@ -91,5 +91,5 @@ For example, such a solution does not scale for problems like matrix multiplicat
 %
 A possible compromise could be to relax the weight minimality constraint to accept a range of weights as the termination condition.
 %
-% instead, we can use some heuristics to recover termination for these type of problems (e.g., rules with 0 weight like $\begin{bmatrix} I & I \\ I & I \end{bmatrix}^0$).
+% instead, we can use some heuristics to recover termination for these type of problems (e.g., rules with 0 weight like $\begin{pmatrix} I & I \\ I & I \end{pmatrix}^0$).
 \end{description}

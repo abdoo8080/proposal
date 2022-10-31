@@ -5,16 +5,16 @@ Assume that we want to write a program that multiplies two matrices efficiently.
 %
 Not only do we care about its functional correctness, but also about its running time.
 %
-A $2 \times 2$ instance of the problem can be described as: given two matrices $A = [a_{ij}]$ and $B = [b_{ij}]$, find a program that efficiently computes the product, which is specified as
+A $2 \times 2$ instance of the problem can be described as: given two matrices $A = (a_{ij})$ and $B = (b_{ij})$, find a program that efficiently computes the product, which is specified as
 %
 \begin{equation}
     AB =
-\begin{bmatrix}
+\begin{pmatrix}
 a_{11} * b_{11} + a_{12} * b_{21} &
 a_{11} * b_{12} + a_{12} * b_{22} \\
 a_{21} * b_{11} + a_{22} * b_{21} &
 a_{21} * b_{12} + a_{22} * b_{22} \\
-\end{bmatrix}
+\end{pmatrix}
 \label{eqn:matrix-mul}
 \end{equation}
 % %
@@ -36,21 +36,21 @@ a_{21} * b_{12} + a_{22} * b_{22} \\
 % \end{tabular}
 %
 % \[ AB =
-% \begin{bmatrix}
+% \begin{pmatrix}
 %     m_1 + m_4 - m_5 + m_7 &
 %     m_3 + m_5 \\
 %     m_2 + m_4 &
 %     m_1 - m_2 + m_3 + m_6 \\
-% \end{bmatrix} \]
+% \end{pmatrix} \]
 Using a SyGuS solver to synthesize a solution, we can use the following simple grammar:
 %
 \[
 S ::=
-\begin{bmatrix} I & I \\
+\begin{pmatrix} I & I \\
 I & I
-\end{bmatrix}
+\end{pmatrix}, \quad
 I ::= V \ | \ I + I \ | \ I - I \ | \ I * I, \quad
-V ::= a_{ij} \ | \ b_{ij}, \quad
+V ::= a_{ij} \ | \ b_{ij},
 \]
 %
 where $S$ is the start symbol.

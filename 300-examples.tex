@@ -53,7 +53,7 @@ I ::= V \ | \ I + I \ | \ I - I \ | \ I * I, \quad
 V ::= a_{ij} \ | \ b_{ij}, \quad
 \]
 %
-where $S$ is the start symbol. 
+where $S$ is the start symbol.
 %
 Current SyGuS solvers return a naive implementation that performs the exact operation in the formulation using 8 multiplications and 4 additions.
 %
@@ -61,6 +61,3 @@ Multiplication, however, is known to be more computationally expensive than addi
 %
 So, we would prefer implementations that reduce the number of multiplications like Strassen's algorithm, which performs only 7 multiplications, over the naive version.
 %
-
-%TODO Need more refinement and connecting with previous paragraph
-Similar problems occur in other synthesis applications: minimizing the number of logic gates in circuits, aggregate function applications in SQL queries, etc.

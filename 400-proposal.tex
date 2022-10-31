@@ -23,7 +23,7 @@ We then define the \emph{total weight} of the program to be the sum of the indiv
 
 Adding weight annotations to grammar rules changes the original SyGuS problem into an optimization problem:
 %
-synthesize a program that satisfies the (1) semantic (2) syntactic constraints while minimizing the total (3) weight.
+synthesize a program that satisfies the (1) semantic and (2) syntactic constraints while minimizing the total (3) weight.
 %
 Our proposal is to solve this new problem by extending current strategies to account for weights.
 %
@@ -36,13 +36,11 @@ current enumerators are designed to enumerate all terms in the language specifie
 %
 They start by enumerating the simplest terms (e.g., terminal symbols) and then iteratively apply production rules on them.
 %
-Our aim here is for the enumerators to generate terms in order of increasing weights.
+In other words, they enumerate terms in order of the number of applied rules.
 %
-This modification will force SuGus solvers to generate minimal weight solutions 
+Our aim here is to modify the enumerators to generate terms in order of increasing weights.
 %
-that satisfy the provided semantic constraints.
-%
-% This modification will force the SyGuS solvers to test ``lighter" terms against the semantic constraints first and ensure they return a solution with minimal weight.
+This modification will force SuGuS solvers to generate minimal weight solutions that satisfy the provided semantic constraints.
 %
 This change can be thought of as an extension of the current behavior of enumerators,
 %
@@ -77,19 +75,21 @@ Solving these sub-problems using enumeration is orders--of--magnitude faster tha
 %
 State of the art solvers utilize this technique to trim the size of large search spaces.
 %
-However, it not clear to us yet how to support weights with unification. 
+However, it not clear to us yet how to support weights with unification.
 %
-For example, following greedy approach by choosing minimum rules for pattern matching may not lead us to a minimal solution. 
+For example, following a greedy approach by choosing minimum rules for pattern matching may not lead us to a minimal solution.
 %
 One approach to resolve that might be to ignore weights and find an initial solution to the problem using unification.
 %
 Then, iteratively use enumeration over the initial solution to reduce the weights of the sub-terms.
 %
-It might be clear how such iterative process may terminate for simple problems,
+Another open question is what the termination condition for this iterative process would be like.
 %
-but it gets more difficult with more complex problems. 
+It might be clear for simple problems, but it gets more difficult with more complex problems.
 %
-For example, such solution does not scale for problems like matrix multiplication.
+For example, such a solution does not scale for problems like matrix multiplication.
 %
-instead, we can use some heuristics to recover termination for these type of problems (e.g., rules with 0 weight like $\begin{bmatrix} I & I \\ I & I \end{bmatrix}^0$).
+A possible compromise could be to relax the weight minimality constraint to accept a range of weights as the termination condition.
+%
+% instead, we can use some heuristics to recover termination for these type of problems (e.g., rules with 0 weight like $\begin{bmatrix} I & I \\ I & I \end{bmatrix}^0$).
 \end{description}

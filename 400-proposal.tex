@@ -13,9 +13,9 @@ For the matrix multiplication example, the extension would look like
     S ::=
     \begin{pmatrix} I & I \\
         I & I
-    \end{pmatrix}^0, \quad
-    I ::= V \ | \ I +^1 I \ | \ I -^1 I \ | \ I *^{16} I, \quad
-V ::= a_{ij}^0 \ | \ b_{ij}^0.
+    \end{pmatrix}^{\red{0}}, \quad
+    I ::= V \ | \ I +^{\red{1}} I \ | \ I -^{\red{1}} I \ | \ I *^{\red{16}} I, \quad
+V ::= a_{ij}^{\red{0}} \ | \ b_{ij}^{\red{0}}.
 \]
 %
 We then define the \emph{total weight} of the program to be the sum of the individual weights of each rule applied to construct the program. For example, $weight(a_{11} * b_{11} + a_{12} * b_{21}) = 4*0 + 1*1 + 2* 16 = 33$.
@@ -23,11 +23,11 @@ We then define the \emph{total weight} of the program to be the sum of the indiv
 
 Adding weight annotations to grammar rules changes the original SyGuS problem into an optimization problem:
 %
-synthesize a program that satisfies the (1) semantic and (2) syntactic constraints while minimizing the total (3) weight.
+synthesize a program that satisfies the (1) semantic and (2) syntactic constraints while (3) minimizing the total weight.
 %
 % Our proposal is to solve this new problem by extending current strategies to account for weights.
 %
-We explore two strategies
+We explore two strategies:
 %
 \begin{description}
 \item[modify enumerators to generate terms with increasing weights:]
@@ -36,11 +36,11 @@ current enumerators are designed to enumerate all terms in the language specifie
 %
 They start by enumerating the simplest terms (e.g., terminal symbols) and then iteratively apply production rules on them.
 %
-In other words, they enumerate terms in order of the number of applied rules.
+In other words, they enumerate terms in order of increasing the number of applied rules.
 %
 Our aim here is to modify the enumerators to generate terms in order of increasing weights.
 %
-This modification will force SuGuS solvers to generate minimal weight solutions that satisfy the provided semantic constraints.
+This modification will force SyGuS solvers to generate minimal weight solutions that satisfy the provided semantic constraints.
 %
 This change can be thought of as an extension of the current behavior of enumerators,
 %
@@ -48,7 +48,7 @@ which can be recovered by simply assigning terminal symbols a weight of 0 and ot
 %
 \item[improve unification to generate terms with decreasing weights:]
 %
-unification is a process of pattern matching the structure of the desired solution against the grammar rules.
+unification is a process of matching the structure of the desired solution against the grammar rules.
 %
 If a match succeeds, the SyGuS problem is then divided into smaller sub-problems that are easier to solve.
 %
@@ -62,7 +62,7 @@ For matrix multiplication problem, we know that the solution is a $2 \times 2$ m
 \label{eq:sequence-matrices}
 \end{equation}
 %
-we can ``pattern match" the rule $\begin{pmatrix} I & I \\ I & I \end{pmatrix}$ against $AB$ and try to solve the sub-problems
+we can ``pattern match" the rule $\begin{pmatrix} I & I \\ I & I \end{pmatrix}$ against $AB$ in ~\ref{eqn:matrix-mul} and try to solve the sub-problems
 %
 \begin{align*}
     mul(A,B)_{11} &= a_{11} * b_{11} + a_{12} * b_{21} &
@@ -77,7 +77,7 @@ State of the art solvers utilize this technique to trim the size of large search
 %
 However, it not clear to us yet how to support weights with unification.
 %
-For example, following a greedy approach by choosing minimum rules for pattern matching may not lead us to a minimal solution.
+For example, following a greedy approach by choosing rules with minimal weights for pattern matching may not lead us to a minimal solution.
 %
 One approach to resolve that might be to ignore weights and find an initial solution to the problem using unification.
 %
@@ -87,7 +87,7 @@ Another open question is what the termination condition for this iterative proce
 %
 It might be clear for simple problems, but it gets more difficult with more complex problems.
 %
-For example, such a solution does not scale for problems like matrix multiplication.
+% For example, such a solution does not scale for problems like matrix multiplication.
 %
 A possible compromise could be to relax the weight minimality constraint to accept a range of weights as the termination condition.
 %

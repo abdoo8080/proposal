@@ -1,10 +1,10 @@
 \section{Expected impact}
 \label{sec:impact}
-Program Synthesis has a wide variety of application from synthesizing new hardware circuits, to generating SQL queries, to generating secure protocols.
+Program Synthesis has a wide variety of applications from synthesizing new hardware circuits, to generating SQL queries, to generating secure protocols.
 %
 SyGuS utilizes the rich SMT framework and its mature tools to synthesize programs with desired correctness and security guarantees.
 %
-However, it is often the case that we care about several other, sometimes competing, ``soft" constraints.
+However, we often care about other, sometimes competing, ``soft" constraints.
 %
 
 Take hardware synthesis for example, a hardware architect spends much of their time minimizing cost and power consumption of their hardware while maximizing its performance (i.e., minimizing latency).
@@ -14,13 +14,18 @@ We can encode those 3 constraints as weights on the grammar rules representing i
 We can then use SyGuS solvers to help us compare different designs that minimize each constraint independently or several combinations of those constraints.
 %
 
-Another example is SQL queries where the main priority is to minimize the number of disk read and writes.
+Another example is synthesis of SQL queries where the main priority is to optimize their performance.
+
+% This is achieved by reducing the amount of data read from persistent storage, exploiting indices on specific columns, using materialized views, etc.
+% DBMS prepares execution plans for each query using several predefined operators like: table scan, filter, hashjoin, sort, etc. We can assign weights to these operators
+
+
 %
-Disk access is often the bottleneck in slow SQL queries that operate over large datasets.
+% Persistent storage access is a bottleneck in slow SQL queries that operate over large datasets.
 %
-We can sometimes mitigate this issue by reordering some of the operations we apply on the tables.
+% We can sometimes mitigate this issue by reordering some of the operations we apply on the tables.
 %
-For example, assume we have 2 tables \texttt{students} and \texttt{employees} each with 2 columns \texttt{SSN} (primary key) and \texttt{NAME} and we are looking for every person whose name starts with an \texttt{A}. We can either combine the two tables and then filter out names that do not start with an \texttt{A} or filter the two tables first and then combine them. The latter query is preferred as it reduces the number of reads and writes to disk. We can convey this information to SyGuS solvers bu giving low weights to \texttt{UNION} operations applied after \texttt{SELECT} operations and high weights for the opposite case.
+% We can either combine the two tables and then filter out names that do not start with an \texttt{A} or filter the two tables first and then combine them. The latter query is preferred as it reduces the number of reads and writes to disk. We can convey this information to SyGuS solvers bu giving low weights to \texttt{UNION} operations applied after \texttt{SELECT} operations and high weights for the opposite case.
 %
 
-TODO: come up with a security example. Either a protocol, its implementation, or maybe talk about firewalls.
+% TODO: come up with a security example. Either a protocol, its implementation, or maybe talk about firewalls.

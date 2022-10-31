@@ -5,7 +5,7 @@ Assume that we want to write a program that multiplies two matrices efficiently.
 %
 Not only do we care about its functional correctness, but also about its running time.
 %
-The problem can be described as: given $2 \times 2$ matrices $A = [a_{ij}]$ and $B = [b_{ij}]$, then find a program that efficiently computes the product defined as
+A $2 \times 2$ instance of the problem can be described as: given two matrices $A = [a_{ij}]$ and $B = [b_{ij}]$, find a program that efficiently computes the product, which is specified as
 %
 \begin{equation}
     AB =
@@ -42,20 +42,20 @@ a_{21} * b_{12} + a_{22} * b_{22} \\
 %     m_2 + m_4 &
 %     m_1 - m_2 + m_3 + m_6 \\
 % \end{bmatrix} \]
-Using SyGuS solver to synthesize a solution, we can use the following simple grammar:
+Using a SyGuS solver to synthesize a solution, we can use the following simple grammar:
 %
 \[
-V ::= a_{ij} \ | \ b_{ij}, \quad
-I ::= V \ | \ I + I \ | \ I - I \ | \ I * I, \quad
 S ::=
 \begin{bmatrix} I & I \\
 I & I
 \end{bmatrix}
+I ::= V \ | \ I + I \ | \ I - I \ | \ I * I, \quad
+V ::= a_{ij} \ | \ b_{ij}, \quad
 \]
 %
 where $S$ is the start symbol. 
 %
-SyGuS solver returns a naive implementation that performs the exact operation in the formulation using 8 multiplications and 4 additions.
+Current SyGuS solvers return a naive implementation that performs the exact operation in the formulation using 8 multiplications and 4 additions.
 %
 Multiplication, however, is known to be more computationally expensive than addition.
 %

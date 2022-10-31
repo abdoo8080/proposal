@@ -23,11 +23,11 @@ they can synthesize a program which satisfies those specifications by constructi
 
 %Potential of PS as well as challenges and shortcomings
 Program Synthesis has the potential to impact the quality of software even more than program verification.
-%
-Program Synthesis, however, is a much harder problem to solve with a high potential for a tool to get stuck on a wrong part of the infinite search space (TODO: give a simple example).
+% TODO: give a simple example
+Program Synthesis, however, is a much harder problem to solve with a high potential for a tool to get stuck on a wrong part of the infinite search space.
 %
 To guide the tool and limit the search space the tools are often also provided with a set of syntactic operators (i.e., a context-free grammar) it can compose together to generate programs in the search space (set of allowed programs).
 %
-The original set of semantic constraints combined with the new set of syntactic constraints constitute a Syntax-Guided Synthesis (SyGuS) Problem~\cite{sygus:2013}.
+The original set of semantic constraints combined with the new set of syntactic constraints constitute a Syntax-Guided Synthesis (SyGuS) Problem~\cite{sygus:2013}. Figure~\ref{fig:sygus-solver} explains the basic architecture of a SyGuS solver.
 
 \input{figures/sygus-main.tex}

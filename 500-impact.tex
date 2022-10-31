@@ -1,4 +1,4 @@
-\section{Expected impact}
+\section{Broader impact}
 \label{sec:impact}
 Program Synthesis has a wide variety of applications from synthesizing new hardware circuits, to generating SQL queries, to generating secure protocols.
 %
@@ -15,6 +15,14 @@ We can then use SyGuS solvers to help us compare different designs that minimize
 %
 
 Another example is synthesis of SQL queries where the main priority is to optimize their performance.
+%
+SQL queries are compiled to execution plans by Database managment systems.
+%
+Those execution plans consist of small steps like: table scan, filter, hashjoin, sort, etc.
+%
+Some of those steps, e.g., scan, are more expensive than others.
+%
+Synthesizing a plan can be formulated as a SyGuS problem, where the optimization goal is to reduce the number of expensive steps.
 
 % This is achieved by reducing the amount of data read from persistent storage, exploiting indices on specific columns, using materialized views, etc.
 % DBMS prepares execution plans for each query using several predefined operators like: table scan, filter, hashjoin, sort, etc. We can assign weights to these operators

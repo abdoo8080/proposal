@@ -16,13 +16,17 @@ We can then use SyGuS solvers to help us compare different designs that minimize
 
 Another example is synthesis of SQL queries where the main priority is to optimize their performance.
 %
-SQL queries are compiled to execution plans by Database managment systems.
+Given a set of inputs and the desired output, Sygus can synthesize multiple queries that compute the same output.  
+%
+But their performance vary depending on the operators used in these queries, and the structure of the underlying tables. 
+%
+Usually, the generated SQL queries are compiled to execution plans by Database managment systems.
 %
 Those execution plans consist of small steps like: table scan, filter, hashjoin, sort, etc.
 %
-Some of those steps, e.g., scan, are more expensive than others.
+Some of those steps, e.g., scan, are more expensive than others, because of latency of external storage.
 %
-Synthesizing a plan can be formulated as a SyGuS problem, where the optimization goal is to reduce the number of expensive steps.
+Synthesizing an optimal query can be formulated as a SyGuS problem, where each operator is assigned a specific cost, and the optimization goal is to reduce the number of overall query cost. 
 
 % This is achieved by reducing the amount of data read from persistent storage, exploiting indices on specific columns, using materialized views, etc.
 % DBMS prepares execution plans for each query using several predefined operators like: table scan, filter, hashjoin, sort, etc. We can assign weights to these operators

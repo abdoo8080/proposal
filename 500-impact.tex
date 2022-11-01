@@ -2,12 +2,12 @@
 \label{sec:impact}
 Program Synthesis has a wide variety of applications from synthesizing new hardware circuits, to generating SQL queries, to generating secure protocols.
 %
-SyGuS utilizes the rich SMT framework and its mature tools to synthesize programs with desired correctness and security guarantees.
+SyGuS utilizes the rich framework for program verification and its mature tools to synthesize programs with desired correctness and security guarantees.
 %
 However, we often care about other, sometimes competing, ``soft" constraints.
 %
 
-Take hardware synthesis for example, a hardware architect spends much of their time minimizing cost and power consumption of their hardware while maximizing its performance (i.e., minimizing latency).
+Take hardware synthesis for example, a hardware architect spends much of their time minimizing cost and power consumption of their hardware while maximizing the performance (i.e., minimizing latency).
 %
 We can encode those 3 constraints as weights on the grammar rules representing individual components of the hardware.
 %
@@ -23,17 +23,6 @@ Those execution plans consist of small steps like: table scan, filter, hashjoin,
 Some of those steps, e.g., scan, are more expensive than others.
 %
 Synthesizing a plan can be formulated as a SyGuS problem, where the optimization goal is to reduce the number of expensive steps.
-
-% This is achieved by reducing the amount of data read from persistent storage, exploiting indices on specific columns, using materialized views, etc.
-% DBMS prepares execution plans for each query using several predefined operators like: table scan, filter, hashjoin, sort, etc. We can assign weights to these operators
-
-
-%
-% Persistent storage access is a bottleneck in slow SQL queries that operate over large datasets.
-%
-% We can sometimes mitigate this issue by reordering some of the operations we apply on the tables.
-%
-% We can either combine the two tables and then filter out names that do not start with an \texttt{A} or filter the two tables first and then combine them. The latter query is preferred as it reduces the number of reads and writes to disk. We can convey this information to SyGuS solvers bu giving low weights to \texttt{UNION} operations applied after \texttt{SELECT} operations and high weights for the opposite case.
 %
 
-% TODO: come up with a security example. Either a protocol, its implementation, or maybe talk about firewalls.
+There are more example use cases not included for space constraints. We believe that Program Synthesis with weights can be beneficial to any systems that requires correctness with known constraints.
